@@ -1,4 +1,11 @@
-A windowed version of the Jukebox_app!
+# A windowed version of the Jukebox_app!
+
+## **Runs on terminal**
+java -jar target/JukeBox-1.0-SNAPSHOT.jar
+
+or on **IDEA by clicking "Run"**
+
+**On the first window, that asks for the folder name, give the full path**
 
 Done:
 1) Opens a window and asks the user for the path to the folder with the songs.
