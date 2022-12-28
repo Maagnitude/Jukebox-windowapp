@@ -1,7 +1,9 @@
 # A windowed version of the Jukebox_app!
 
 ## **Runs on terminal**
+```bash
 java -jar target/JukeBox-1.0-SNAPSHOT.jar
+```
 
 or on **IDEA by clicking "Run"**
 
