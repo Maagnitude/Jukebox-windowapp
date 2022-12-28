@@ -16,3 +16,5 @@ Remains to be done:
 3) To put in the strategies, loop, order, random, like buttons, which when pressed, will be applied from the next song played
 4) Bar at the bottom of the window, so that if the user selects a particular note of the song, it will play that note
 5) The metadata, artist, album etc, to be displayed in the window as well.
+6) When a song is clicked, and then you click "next", it plays the next song after the last one played without clicking.
+In other words, it refreshes the index of the song, instead of increasing it by 1.
