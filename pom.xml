@@ -87,7 +87,7 @@
                                 <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                                 <addClasspath>true</addClasspath>
                                 <classpathPrefix>lib/</classpathPrefix>
-                                <mainClass>org.hua.JukeBox</mainClass>
+                                <mainClass>gr.hua.dit.oop2.Main</mainClass>
                             </manifest>
                         </archive>
                     </configuration>
