@@ -19,7 +19,7 @@ Done:
 7) If you double click on a song in the list, it plays that song, either before or after you clicked on something.
 8) If you close the window by pressing the 'x' in the upper right corner, the application is closed
 
-Remains to be done:
+TODO:
 1) Loggers that display messages in the terminal, like in the other work
 2) Make the window a little better looking
 3) To put in the strategies, loop, order, random, like buttons, which when pressed, will be applied from the next song played
@@ -27,3 +27,4 @@ Remains to be done:
 5) The metadata, artist, album etc, to be displayed in the window as well.
 6) When a song is clicked, and then you click "next", it plays the next song after the last one played without clicking.
 In other words, it refreshes the index of the song, instead of increasing it by 1.
+7) Sound volume bar.
