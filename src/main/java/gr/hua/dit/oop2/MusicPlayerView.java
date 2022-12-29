@@ -9,14 +9,14 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Serial;
+// import java.io.Serial;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class MusicPlayerView extends JFrame {
-    @Serial
-    private static final long serialVersionUID = 1L;
+//     @Serial
+//     private static final long serialVersionUID = 1L;
     private final JButton playButton;
     private final JButton pauseButton;
     private final JButton nextButton;
