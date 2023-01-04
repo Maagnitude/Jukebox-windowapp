@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2023-01-04T13:27:56.366924791Z</date>
+  <millis>1672838876366</millis>
+  <nanos>924791</nanos>
+  <sequence>0</sequence>
+  <logger>org.hua.LogHandler</logger>
+  <level>INFO</level>
+  <class>org.hua.LogHandler$LogSave</class>
+  <method>writeToLogNow</method>
+  <thread>1</thread>
+  <message>Starting the program</message>
+</record>
+</log>

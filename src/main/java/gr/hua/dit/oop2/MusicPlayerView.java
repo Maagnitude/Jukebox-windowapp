@@ -1,5 +1,7 @@
 package gr.hua.dit.oop2;
 
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
 import gr.hua.dit.oop2.musicplayer.PlayerException;
 
 import java.awt.*;
@@ -9,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.logging.Level;
 // import java.io.Serial;
 
 import javax.imageio.ImageIO;
@@ -26,10 +29,13 @@ public class MusicPlayerView extends JFrame {
     private final JButton repeatButton;
     private final JList<String> songList;
 
+
+
     public MusicPlayerView(MusicPlayerController controller) throws IOException {
         setTitle("Music Player");
         setSize(1000, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 
         // Create the media buttons
         playButton = new JButton("");
@@ -145,7 +151,9 @@ public class MusicPlayerView extends JFrame {
                     int index = songList.locationToIndex(e.getPoint());
                     try {
                         model.clickedPlay(controller.songs, index);
-                    } catch (InterruptedException | FileNotFoundException | PlayerException ex) {
+                    } catch (InterruptedException | PlayerException | IOException | InvalidDataException |
+                             UnsupportedTagException ex) {
+                        //org.hua.LogHandler.writeToLogNoThread(Level.SEVERE,"RuntimeException");
                         throw new RuntimeException(ex);
                     }
                 }

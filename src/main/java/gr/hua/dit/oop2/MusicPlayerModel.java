@@ -1,14 +1,27 @@
 package gr.hua.dit.oop2;
 
+import com.mpatric.mp3agic.ID3v1;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.Mp3File;
+import com.mpatric.mp3agic.UnsupportedTagException;
 import gr.hua.dit.oop2.musicplayer.*;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.logging.Level;
+
 public class MusicPlayerModel {
     private final Player player;
 
     private int currentSongIndex = 0;
+
+
     private ArrayList<String> songs;
+
+    private InputStream file;
+
+    private final ArrayList<String> oldArray = new ArrayList<>();
 
 //    private final PlayerListener playerListener = new PlayerListener() {
 //        @Override
@@ -21,9 +34,10 @@ public class MusicPlayerModel {
         player = PlayerFactory.getPlayer();
         this.songs = MusicPlayerController.songs;
     }
-    public void playSong(ArrayList<String> songs) throws PlayerException, FileNotFoundException, InterruptedException {
+    public void playSong(ArrayList<String> songs) throws PlayerException, IOException, InterruptedException, InvalidDataException, UnsupportedTagException {
 //        this.songs = songs;
         String song = songs.get(currentSongIndex);
+        mp3MetaData(song);
         InputStream file = new FileInputStream(song);
 //        player.addPlayerListener(new PlayerListener() {
 //            public void statusUpdated(PlayerEvent event) {
@@ -41,43 +55,96 @@ public class MusicPlayerModel {
             // If the player was paused, resume playback
             if (player.getStatus() == Player.Status.PAUSED) {
                 player.resume();
+                //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Song resumed");
             } else {
                 player.startPlaying(file);
+                //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Song started");
             }
         }
     }
     public void pause() {
         if (player.getStatus() == Player.Status.PLAYING) {
             player.pause();
+            //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Song paused");
         }
     }
-    public void next(ArrayList<String> songs) throws PlayerException, FileNotFoundException, InterruptedException {
+    public void next(ArrayList<String> songs) throws PlayerException, IOException, InterruptedException, InvalidDataException, UnsupportedTagException {
             player.stop();
+        //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Song stopped");
             this.currentSongIndex = (currentSongIndex + 1) % songs.size();
             Thread.sleep(1000);
+        //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Thread slept");
             playSong(songs);
     }
-    public void prev(ArrayList<String> songs) throws InterruptedException, PlayerException, FileNotFoundException {
+    public void prev(ArrayList<String> songs) throws InterruptedException, PlayerException, IOException, InvalidDataException, UnsupportedTagException {
         player.stop();
+        //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Song stopped");
         this.currentSongIndex = (currentSongIndex - 1);
         if (this.currentSongIndex == -1)
             this.currentSongIndex = songs.size() - 1;
         Thread.sleep(1000);
+        //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Thread slept");
         playSong(songs);
     }
     public void stop() {
         if (player.getStatus() == Player.Status.PLAYING || player.getStatus() == Player.Status.PAUSED) {
             player.stop();
+            //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Song stopped");
         }
     }
-    public void clickedPlay(ArrayList<String> songs, int index) throws InterruptedException, PlayerException, FileNotFoundException {
+    public void clickedPlay(ArrayList<String> songs, int index) throws InterruptedException, PlayerException, IOException, InvalidDataException, UnsupportedTagException {
         this.currentSongIndex = index;
         if (player.getStatus() == Player.Status.IDLE) {
             playSong(songs);
         } else {
             player.stop();
+            //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Song stopped");
             Thread.sleep(1000);
+            //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Thread slept");
             playSong(songs);
+        }
+    }
+
+    public void loop(ArrayList<String> songs) throws PlayerException, InvalidDataException, UnsupportedTagException, IOException, InterruptedException {
+        this.currentSongIndex = currentSongIndex;
+        while(true){
+            playSong(songs);
+            System.out.println(player.getStatus());
+        }
+    }
+
+    public void random(ArrayList<String> songs) throws PlayerException, IOException, InvalidDataException, UnsupportedTagException, InterruptedException {
+        oldArray.addAll(songs);  //για να κρατήοσουμε και την παλιά playlist
+        Collections.shuffle(songs);
+
+        for (int z = 0; z < songs.size(); z++) {
+            this.currentSongIndex = z;
+            playSong(songs);
+        }
+        player.close();
+    }
+
+    public void order(ArrayList<String> songs) throws PlayerException, IOException, InvalidDataException, UnsupportedTagException, InterruptedException {
+        int z = 0;
+        for(String song:songs){
+            this.currentSongIndex = z;
+            playSong(songs);
+            z++;
+        }
+    }
+// /home/kazakos/Documents/songs
+    public void mp3MetaData(String song) throws InvalidDataException, UnsupportedTagException, IOException {
+        //String song = songs.get(currentSongIndex);
+        Mp3File mp3file = new Mp3File(song);
+        if (mp3file.hasId3v1Tag()) {
+            ID3v1 id3v1Tag = mp3file.getId3v1Tag();
+            System.out.println("Track: " + id3v1Tag.getTrack());
+            System.out.println("Artist: " + id3v1Tag.getArtist());
+            System.out.println("Title: " + id3v1Tag.getTitle());
+            System.out.println("Album: " + id3v1Tag.getAlbum());
+            System.out.println("Year: " + id3v1Tag.getYear());
+            System.out.println("Genre: " + id3v1Tag.getGenre() + " (" + id3v1Tag.getGenreDescription() + ")");
+            System.out.println("Comment: " + id3v1Tag.getComment());
         }
     }
 }
