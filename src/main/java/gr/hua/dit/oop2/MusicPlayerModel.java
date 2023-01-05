@@ -58,8 +58,39 @@ public class MusicPlayerModel {
                 //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Song resumed");
             } else {
                 player.startPlaying(file);
+                System.out.println(player.getStatus());
+                //player.startPlaying(file);
+                player.addPlayerListener(new PlayerListener() {
+                    public void statusUpdated(PlayerEvent e) {
+                        if (e.getStatus() == Player.Status.IDLE) {
+                            System.out.println("TESTING HELLO");
+                            try {
+                                System.out.println(currentSongIndex);
+                                currentSongIndex++;
+                                System.out.println(currentSongIndex);
+                                String song = songs.get(currentSongIndex);
+                                //mp3MetaData(song);
+                                System.out.println(song);
+                                InputStream file = new FileInputStream(song);
+                                System.out.println(file);
+                                player.startPlaying(file);
+                                System.out.println("hello");
+                            } catch (PlayerException ex) {
+                                throw new RuntimeException(ex);
+                            } catch (FileNotFoundException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    }
+                });
+                //while (player.getStatus()==Player.Status.PLAYING){ System.out.println(player.getStatus());};
+                //System.out.println(player.getStatus());
+                //next(songs);
+               // /home/kazakos/Documents/songs
+
                 //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Song started");
             }
+
         }
     }
     public void pause() {
@@ -69,7 +100,7 @@ public class MusicPlayerModel {
         }
     }
     public void next(ArrayList<String> songs) throws PlayerException, IOException, InterruptedException, InvalidDataException, UnsupportedTagException {
-            player.stop();
+            stop();
         //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Song stopped");
             this.currentSongIndex = (currentSongIndex + 1) % songs.size();
             Thread.sleep(1000);
@@ -77,7 +108,7 @@ public class MusicPlayerModel {
             playSong(songs);
     }
     public void prev(ArrayList<String> songs) throws InterruptedException, PlayerException, IOException, InvalidDataException, UnsupportedTagException {
-        player.stop();
+        stop();
         //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Song stopped");
         this.currentSongIndex = (currentSongIndex - 1);
         if (this.currentSongIndex == -1)
@@ -106,21 +137,24 @@ public class MusicPlayerModel {
     }
 
     public void loop(ArrayList<String> songs) throws PlayerException, InvalidDataException, UnsupportedTagException, IOException, InterruptedException {
-        this.currentSongIndex = currentSongIndex;
+        //this.currentSongIndex = currentSongIndex;
         while(true){
             playSong(songs);
             System.out.println(player.getStatus());
         }
     }
 
+    public void playRandomSong(ArrayList<String> suffledSongs, int index) throws InvalidDataException, UnsupportedTagException, IOException, PlayerException, InterruptedException {
+        String song = suffledSongs.get(currentSongIndex);
+        mp3MetaData(song);
+        InputStream file = new FileInputStream(song);
+        player.startPlaying(file);
+        next(suffledSongs);
+    }
     public void random(ArrayList<String> songs) throws PlayerException, IOException, InvalidDataException, UnsupportedTagException, InterruptedException {
         oldArray.addAll(songs);  //για να κρατήοσουμε και την παλιά playlist
-        Collections.shuffle(songs);
-
-        for (int z = 0; z < songs.size(); z++) {
-            this.currentSongIndex = z;
-            playSong(songs);
-        }
+        Collections.shuffle(oldArray);
+        playRandomSong(oldArray,currentSongIndex);
         player.close();
     }
 

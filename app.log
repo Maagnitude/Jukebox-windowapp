@@ -2,9 +2,9 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2023-01-04T13:27:56.366924791Z</date>
-  <millis>1672838876366</millis>
-  <nanos>924791</nanos>
+  <date>2023-01-05T12:41:12.323314407Z</date>
+  <millis>1672922472323</millis>
+  <nanos>314407</nanos>
   <sequence>0</sequence>
   <logger>org.hua.LogHandler</logger>
   <level>INFO</level>

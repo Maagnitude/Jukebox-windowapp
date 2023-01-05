@@ -15,9 +15,9 @@ public class MusicPlayerController implements ActionListener {
     private final MusicPlayerModel model;
     private MusicPlayerView view;
 
-    private int change_mod_loop = 1;
+    private int change_mod_loop = 0;
 
-    private int change_mod_shuffle = 1;
+    private int change_mod_shuffle = 0;
     private final JFileChooser fileChooser;
     public MusicPlayerController(MusicPlayerModel model) {
         this.model = model;
@@ -87,13 +87,14 @@ public class MusicPlayerController implements ActionListener {
             // TODO
             try {
                 if(change_mod_shuffle%2==0){
-                    model.order(songs);
+                    model.random(songs);
                     change_mod_shuffle = (change_mod_shuffle + 1) % 2;
                 }
                 else{
-                    change_mod_shuffle = change_mod_shuffle + 1;
+                    model.playSong(songs);
+                    change_mod_shuffle = (change_mod_shuffle + 1) % 2;
                 }
-                model.random(songs);
+                //model.random(songs);
             } catch (PlayerException | InvalidDataException | UnsupportedTagException | IOException |
                      InterruptedException ex) {
                 throw new RuntimeException(ex);
@@ -102,13 +103,14 @@ public class MusicPlayerController implements ActionListener {
             // TODO
             try {
                 if(change_mod_loop%2==0){
-                    model.order(songs);
+                    model.loop(songs);
                     change_mod_loop = (change_mod_loop + 1) % 2;
                 }
                 else{
+                    model.playSong(songs);
                     change_mod_loop = change_mod_loop + 1;
                 }
-                model.loop(songs);
+                //model.loop(songs);
             } catch (PlayerException | InvalidDataException | UnsupportedTagException | IOException |
                      InterruptedException ex) {
                 throw new RuntimeException(ex);
