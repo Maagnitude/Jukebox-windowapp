@@ -10,33 +10,15 @@ public class MusicPlayerModel {
     private int currentSongIndex = 0;
     private ArrayList<String> songs;
 
-//    private final PlayerListener playerListener = new PlayerListener() {
-//        @Override
-//        public void statusUpdated(PlayerEvent playerEvent) {
-//
-//        }
-//    };
-
     public MusicPlayerModel() {
         player = PlayerFactory.getPlayer();
         this.songs = MusicPlayerController.songs;
     }
     public void playSong(ArrayList<String> songs) throws PlayerException, FileNotFoundException, InterruptedException {
-//        this.songs = songs;
+
         String song = songs.get(currentSongIndex);
         InputStream file = new FileInputStream(song);
-//        player.addPlayerListener(new PlayerListener() {
-//            public void statusUpdated(PlayerEvent event) {
-//                System.out.println("Status is "+ event.getStatus());
-//                if (event.getStatus() == Player.Status.IDLE) {
-//                    try {
-//                        next(songs);
-//                    } catch (PlayerException | FileNotFoundException | InterruptedException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                }
-//            }
-//        });
+
         if (player.getStatus() != Player.Status.PLAYING) {
             // If the player was paused, resume playback
             if (player.getStatus() == Player.Status.PAUSED) {
