@@ -12,6 +12,7 @@ import java.util.logging.Level;
 
 public class MusicPlayerController implements ActionListener {
     static ArrayList<String> songs = new ArrayList<String>();
+
     private final MusicPlayerModel model;
     private MusicPlayerView view;
 
@@ -54,10 +55,18 @@ public class MusicPlayerController implements ActionListener {
         if (e.getSource() == view.getPlayButton()) {
             try {
                 model.playSong(songs);
-            } catch (PlayerException | FileNotFoundException | InterruptedException ex) {
+            } catch (FileNotFoundException ex) {
                 //org.hua.LogHandler.writeToLogNoThread(Level.SEVERE,"RuntimeException");
                 throw new RuntimeException(ex);
-            } catch (InvalidDataException | IOException | UnsupportedTagException ex) {
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (PlayerException ex) {
+                throw new RuntimeException(ex);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            } catch (InvalidDataException ex) {
+                throw new RuntimeException(ex);
+            } catch (UnsupportedTagException ex) {
                 throw new RuntimeException(ex);
             }
         } else if (e.getSource() == view.getPauseButton()) {

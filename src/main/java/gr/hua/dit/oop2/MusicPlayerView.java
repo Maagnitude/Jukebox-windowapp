@@ -143,22 +143,22 @@ public class MusicPlayerView extends JFrame {
         buttonPanel.add(repeatButton);
         listPanel.add(songListPane);
 
-        songList.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                MusicPlayerModel model = new MusicPlayerModel();
-                if (e.getClickCount() == 2) {
-                    int index = songList.locationToIndex(e.getPoint());
-                    try {
-                        model.clickedPlay(controller.songs, index);
-                    } catch (InterruptedException | PlayerException | IOException | InvalidDataException |
-                             UnsupportedTagException ex) {
-                        //org.hua.LogHandler.writeToLogNoThread(Level.SEVERE,"RuntimeException");
-                        throw new RuntimeException(ex);
-                    }
-                }
-            }
-        });
+//        songList.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                MusicPlayerModel model = new MusicPlayerModel();
+//                if (e.getClickCount() == 2) {
+//                    int index = songList.locationToIndex(e.getPoint());
+//                    try {
+//                        model.clickedPlay(controller.songs, index);
+//                    } catch (InterruptedException | PlayerException | IOException | InvalidDataException |
+//                             UnsupportedTagException ex) {
+//                        //org.hua.LogHandler.writeToLogNoThread(Level.SEVERE,"RuntimeException");
+//                        throw new RuntimeException(ex);
+//                    }
+//                }
+//            }
+//        });
         // Ask user to input folder path
         String folder = JOptionPane.showInputDialog(this, "Please enter the folder name with its path: ");
         controller.setSongsInFolder(folder,this);
