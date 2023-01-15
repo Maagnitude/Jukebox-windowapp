@@ -5,9 +5,6 @@ import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import gr.hua.dit.oop2.musicplayer.*;
-import jdk.jfr.Timespan;
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioFileIO;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -16,32 +13,24 @@ import java.util.logging.Level;
 
 public class MusicPlayerModel {
     private final Player player;
-
     private int currentSongIndex = 0;
-
-    private int suffledSongIndex = 0;
-
-    private boolean isRandom = false;
-
-
-    private ArrayList<String> songs;
-
-    private InputStream file;
-
-    private final ArrayList<String> oldArray = new ArrayList<>();
+    private boolean isShuffled = false;
+    private boolean isRepeat = false;
+    private boolean firstTimeShuffled = true;
+    private boolean stopPressed = false;
+    String song = "";
+    private final ArrayList<String> shuffledArray = new ArrayList<>();
 
     public MusicPlayerModel() {
         player = PlayerFactory.getPlayer();
-        this.songs = MusicPlayerController.songs;
     }
 
-
     public void playSong(ArrayList<String> songs) throws PlayerException, IOException, InterruptedException, InvalidDataException, UnsupportedTagException {
-        String song = "";
-        if(isRandom){
-            song =  oldArray.get(suffledSongIndex);
-        }
-        else{
+
+        randomizer(songs);
+        if (isShuffled) {
+            song =  shuffledArray.get(currentSongIndex);
+        } else {
              song = songs.get(currentSongIndex);
         }
         mp3MetaData(song);
@@ -50,144 +39,116 @@ public class MusicPlayerModel {
             // If the player was paused, resume playback
             if (player.getStatus() == Player.Status.PAUSED) {
                 player.resume();
-                //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Song resumed");
+                org.hua.LogHandler.writeToLogNoThread(Level.INFO, song.substring(song.lastIndexOf("/") + 1) + " is resumed");
             } else {
                 player.startPlaying(file);
-                System.out.println(player.getStatus());
+                System.out.println(song.substring(song.lastIndexOf("/") + 1) + " is " + player.getStatus());
                 player.addPlayerListener(new PlayerListener() {
                     public void statusUpdated(PlayerEvent e) {
-                        if (e.getStatus() == Player.Status.IDLE) {
-                            System.out.println("TESTING HELLO");
+                        if (e.getStatus() == Player.Status.IDLE && !(stopPressed)) {
                             try {
                                 System.out.println(currentSongIndex);
-                                if(isRandom){
-                                    next(oldArray);
-                                }
-                                else{
-                                    next(songs);
-                                }
-                            } catch (PlayerException ex) {
-                                throw new RuntimeException(ex);
-                            } catch (FileNotFoundException ex) {
-                                throw new RuntimeException(ex);
-                            } catch (InvalidDataException ex) {
-                                throw new RuntimeException(ex);
-                            } catch (UnsupportedTagException ex) {
-                                throw new RuntimeException(ex);
-                            } catch (IOException ex) {
-                                throw new RuntimeException(ex);
-                            } catch (InterruptedException ex) {
+                                next(songs);
+                            } catch (PlayerException | InvalidDataException | UnsupportedTagException | IOException |
+                                     InterruptedException ex) {
                                 throw new RuntimeException(ex);
                             }
                         }
                     }
                 });
             }
-
         }
     }
+
     public void pause() {
         if (player.getStatus() == Player.Status.PLAYING) {
             player.pause();
-            //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Song paused");
+            org.hua.LogHandler.writeToLogNoThread(Level.INFO, song.substring(song.lastIndexOf("/") + 1) + " is paused");
         }
     }
+
     public void next(ArrayList<String> songs) throws PlayerException, IOException, InterruptedException, InvalidDataException, UnsupportedTagException {
-        System.out.println(player.getStatus());
-        stop();
-        //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Song stopped");
-        if(isRandom){
-            this.suffledSongIndex = (suffledSongIndex + 1) % oldArray.size();
-            playSong(oldArray);
-        }else{
-            this.currentSongIndex = (currentSongIndex + 1) % songs.size();
+        player.stop();
+        if (isRepeat) {
+            playSong(songs);
+        } else {
+//            org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Next song");
+            currentSongIndex = (currentSongIndex + 1) % songs.size();
             playSong(songs);
         }
-            Thread.sleep(1000);
-        //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Thread slept");
     }
+
     public void prev(ArrayList<String> songs) throws InterruptedException, PlayerException, IOException, InvalidDataException, UnsupportedTagException {
-        stop();
-        //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Song stopped");
-        if(isRandom){
-            this.suffledSongIndex = (suffledSongIndex - 1);
-            if (this.suffledSongIndex == -1)
-                this.suffledSongIndex = oldArray.size() - 1;
-            Thread.sleep(1000);
-            playSong(oldArray);
-        }else{
-            this.currentSongIndex = (currentSongIndex - 1);
-            if (this.currentSongIndex == -1)
-                this.currentSongIndex = songs.size() - 1;
-            Thread.sleep(1000);
-            playSong(songs);
+        player.stop();
+        org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Previous song");
+        currentSongIndex = (currentSongIndex - 2);
+        if (currentSongIndex == -2) {
+            currentSongIndex = songs.size() - 1;
+        } else if (currentSongIndex == -1) {
+            currentSongIndex = 0;
         }
-        //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Thread slept");
+        playSong(songs);
     }
+
     public void stop() {
         if (player.getStatus() == Player.Status.PLAYING || player.getStatus() == Player.Status.PAUSED) {
             player.stop();
-            //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Song stopped");
+            org.hua.LogHandler.writeToLogNoThread(Level.INFO, song.substring(song.lastIndexOf("/") + 1) + " is stopped");
         }
     }
-//    public void clickedPlay(ArrayList<String> songs, int index) throws InterruptedException, PlayerException, IOException, InvalidDataException, UnsupportedTagException {
-//        if(isRandom){
-//            this.suffledSongIndex = index;
-//            if (player.getStatus() == Player.Status.IDLE) {
-//                playSong(oldArray);
-//            } else {
-//                player.stop();
-//                //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Song stopped");
-//                Thread.sleep(1000);
-//                //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Thread slept");
-//                playSong(oldArray);
-//            }
-//        }else{
-//            this.currentSongIndex = index;
-//            if (player.getStatus() == Player.Status.IDLE) {
-//                playSong(songs);
-//            } else {
-//                player.stop();
-//                //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Song stopped");
-//                Thread.sleep(1000);
-//                //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Thread slept");
-//                playSong(songs);
-//            }
-//        }
-//    }
 
-    public void loop(ArrayList<String> songs) throws PlayerException, InvalidDataException, UnsupportedTagException, IOException, InterruptedException {
-        String song = "";
-        while(true){
-            if(isRandom){
-                song = oldArray.get(suffledSongIndex);
-                mp3MetaData(song);
-                InputStream file = new FileInputStream(song);
-                player.startPlaying(file);
-            }else{
-                song = songs.get(currentSongIndex);
-                mp3MetaData(song);
-                InputStream file = new FileInputStream(song);
-                player.startPlaying(file);
+    public void setStopPressed (boolean stopPressed) {
+        this.stopPressed = stopPressed;
+    }
+
+    public void clickedPlay(ArrayList<String> songs, int index) throws InterruptedException, PlayerException, IOException, InvalidDataException, UnsupportedTagException {
+        if(isShuffled){
+            this.currentSongIndex = index;
+            if (player.getStatus() == Player.Status.IDLE && !stopPressed) {
+                playSong(shuffledArray);
+            } else {
+                player.stop();
+                //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Song stopped");
+                Thread.sleep(1000);
+                //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Thread slept");
+                playSong(shuffledArray);
+            }
+        }else{
+            this.currentSongIndex = index;
+            if (player.getStatus() == Player.Status.IDLE && !stopPressed) {
+                playSong(songs);
+            } else {
+                player.stop();
+                //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Song stopped");
+                Thread.sleep(1000);
+                //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Thread slept");
+                playSong(songs);
             }
         }
     }
 
-    public void random(ArrayList<String> songs) throws PlayerException, IOException, InvalidDataException, UnsupportedTagException, InterruptedException {
-        oldArray.addAll(songs);  //για να κρατήοσουμε και την παλιά playlist
-        Collections.shuffle(oldArray);
-        isRandom = true;
-        playSong(oldArray);
-        isRandom = false;
+    public void randomizer (ArrayList <String> songs) {
+        if (firstTimeShuffled) {
+            shuffledArray.addAll(songs);  //για να κρατήοσουμε και την παλιά playlist
+            Collections.shuffle(shuffledArray);
+            firstTimeShuffled = false;
+        }
     }
 
-    public void order(ArrayList<String> songs) throws PlayerException, IOException, InvalidDataException, UnsupportedTagException, InterruptedException {
-        int z = 0;
-        for(String song:songs){
-            this.currentSongIndex = z;
-            playSong(songs);
-            z++;
-        }
+    public void setShuffled (boolean isShuffled) {
+        this.isShuffled = isShuffled;
+    }
+
+    public boolean isShuffled () {
+        return isShuffled;
+    }
+
+    public void setRepeat (boolean isRepeat) {
+        this.isRepeat = isRepeat;
+    }
+
+    public boolean isRepeat () {
+        return isRepeat;
     }
     public void mp3MetaData(String song) throws InvalidDataException, UnsupportedTagException, IOException {
         Mp3File mp3file = new Mp3File(song);

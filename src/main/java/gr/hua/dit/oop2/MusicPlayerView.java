@@ -5,21 +5,18 @@ import com.mpatric.mp3agic.UnsupportedTagException;
 import gr.hua.dit.oop2.musicplayer.PlayerException;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.logging.Level;
-// import java.io.Serial;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class MusicPlayerView extends JFrame {
-//     @Serial
-//     private static final long serialVersionUID = 1L;
+
     private final JButton playButton;
     private final JButton pauseButton;
     private final JButton nextButton;
@@ -28,14 +25,15 @@ public class MusicPlayerView extends JFrame {
     private final JButton shuffleButton;
     private final JButton repeatButton;
     private final JList<String> songList;
-
-
+    private boolean isShuffled = false;
+    private boolean isRepeat = false;
+    private boolean isPlaying = false;
 
     public MusicPlayerView(MusicPlayerController controller) throws IOException {
+
         setTitle("Music Player");
         setSize(1000, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 
         // Create the media buttons
         playButton = new JButton("");
@@ -56,6 +54,38 @@ public class MusicPlayerView extends JFrame {
         playButton.setHorizontalTextPosition(SwingConstants.CENTER);
         playButton.setVerticalTextPosition(SwingConstants.CENTER);
 
+        playButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (isPlaying) {
+                    ImageIcon playOnIcon = new ImageIcon("src/main/resources/playon.png");
+                    Image image = playOnIcon.getImage();
+                    image = image.getScaledInstance(105, 105, Image.SCALE_SMOOTH);
+                    playOnIcon = new ImageIcon(image);
+                    playButton.setIcon(playOnIcon);
+                    playButton.setPreferredSize(new Dimension(90,90));
+                    playButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                    playButton.setVerticalTextPosition(SwingConstants.CENTER);
+                    ImageIcon pauseIcon = new ImageIcon("src/main/resources/pause.png");
+                    Image image1 = pauseIcon.getImage();
+                    image1 = image1.getScaledInstance(95, 95, Image.SCALE_SMOOTH);
+                    pauseIcon = new ImageIcon(image1);
+                    pauseButton.setIcon(pauseIcon);
+                    pauseButton.setPreferredSize(new Dimension(80,80));
+                    pauseButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                    pauseButton.setVerticalTextPosition(SwingConstants.CENTER);
+                    ImageIcon stopIcon = new ImageIcon("src/main/resources/stop.png");
+                    Image image4 = stopIcon.getImage();
+                    image4 = image4.getScaledInstance(95, 95, Image.SCALE_SMOOTH);
+                    stopIcon = new ImageIcon(image4);
+                    stopButton.setIcon(stopIcon);
+                    stopButton.setPreferredSize(new Dimension(80,80));
+                    stopButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                    stopButton.setVerticalTextPosition(SwingConstants.CENTER);
+                }
+            }
+        });
+
         ImageIcon pauseIcon = new ImageIcon("src/main/resources/pause.png");
         Image image1 = pauseIcon.getImage();
         image1 = image1.getScaledInstance(95, 95, Image.SCALE_SMOOTH);
@@ -64,6 +94,70 @@ public class MusicPlayerView extends JFrame {
         pauseButton.setPreferredSize(new Dimension(80,80));
         pauseButton.setHorizontalTextPosition(SwingConstants.CENTER);
         pauseButton.setVerticalTextPosition(SwingConstants.CENTER);
+
+        pauseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (!isPlaying) {
+                    ImageIcon pauseOnIcon = new ImageIcon("src/main/resources/pauseon.png");
+                    Image image1 = pauseOnIcon.getImage();
+                    image1 = image1.getScaledInstance(95, 95, Image.SCALE_SMOOTH);
+                    pauseOnIcon = new ImageIcon(image1);
+                    pauseButton.setIcon(pauseOnIcon);
+                    pauseButton.setPreferredSize(new Dimension(80,80));
+                    pauseButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                    pauseButton.setVerticalTextPosition(SwingConstants.CENTER);
+                    ImageIcon playIcon = new ImageIcon("src/main/resources/play.png");
+                    Image image = playIcon.getImage();
+                    image = image.getScaledInstance(105, 105, Image.SCALE_SMOOTH);
+                    playIcon = new ImageIcon(image);
+                    playButton.setIcon(playIcon);
+                    playButton.setPreferredSize(new Dimension(90,90));
+                    playButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                    playButton.setVerticalTextPosition(SwingConstants.CENTER);
+                    ImageIcon stopIcon = new ImageIcon("src/main/resources/stop.png");
+                    Image image4 = stopIcon.getImage();
+                    image4 = image4.getScaledInstance(95, 95, Image.SCALE_SMOOTH);
+                    stopIcon = new ImageIcon(image4);
+                    stopButton.setIcon(stopIcon);
+                    stopButton.setPreferredSize(new Dimension(80,80));
+                    stopButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                    stopButton.setVerticalTextPosition(SwingConstants.CENTER);
+                }
+            }
+        });
+
+        stopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (!isPlaying) {
+                    ImageIcon stopOnIcon = new ImageIcon("src/main/resources/stopon.png");
+                    Image image4 = stopOnIcon.getImage();
+                    image4 = image4.getScaledInstance(95, 95, Image.SCALE_SMOOTH);
+                    stopOnIcon = new ImageIcon(image4);
+                    stopButton.setIcon(stopOnIcon);
+                    stopButton.setPreferredSize(new Dimension(80,80));
+                    stopButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                    stopButton.setVerticalTextPosition(SwingConstants.CENTER);
+                    ImageIcon playIcon = new ImageIcon("src/main/resources/play.png");
+                    Image image = playIcon.getImage();
+                    image = image.getScaledInstance(105, 105, Image.SCALE_SMOOTH);
+                    playIcon = new ImageIcon(image);
+                    playButton.setIcon(playIcon);
+                    playButton.setPreferredSize(new Dimension(90,90));
+                    playButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                    playButton.setVerticalTextPosition(SwingConstants.CENTER);
+                    ImageIcon pauseIcon = new ImageIcon("src/main/resources/pause.png");
+                    Image image1 = pauseIcon.getImage();
+                    image1 = image1.getScaledInstance(95, 95, Image.SCALE_SMOOTH);
+                    pauseIcon = new ImageIcon(image1);
+                    pauseButton.setIcon(pauseIcon);
+                    pauseButton.setPreferredSize(new Dimension(80,80));
+                    pauseButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                    pauseButton.setVerticalTextPosition(SwingConstants.CENTER);
+                }
+            }
+        });
 
         ImageIcon nextIcon = new ImageIcon("src/main/resources/next.png");
         Image image2 = nextIcon.getImage();
@@ -76,6 +170,37 @@ public class MusicPlayerView extends JFrame {
         nextButton.setHorizontalTextPosition(SwingConstants.CENTER);
         nextButton.setVerticalTextPosition(SwingConstants.CENTER);
 
+        nextButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (!isPlaying) {
+                    ImageIcon playOnIcon = new ImageIcon("src/main/resources/playon.png");
+                    Image image = playOnIcon.getImage();
+                    image = image.getScaledInstance(105, 105, Image.SCALE_SMOOTH);
+                    playOnIcon = new ImageIcon(image);
+                    playButton.setIcon(playOnIcon);
+                    playButton.setPreferredSize(new Dimension(90,90));
+                    playButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                    playButton.setVerticalTextPosition(SwingConstants.CENTER);
+                    ImageIcon pauseIcon = new ImageIcon("src/main/resources/pause.png");
+                    Image image1 = pauseIcon.getImage();
+                    image1 = image1.getScaledInstance(95, 95, Image.SCALE_SMOOTH);
+                    pauseIcon = new ImageIcon(image1);
+                    pauseButton.setIcon(pauseIcon);
+                    pauseButton.setPreferredSize(new Dimension(80,80));
+                    pauseButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                    pauseButton.setVerticalTextPosition(SwingConstants.CENTER);
+                    ImageIcon stopIcon = new ImageIcon("src/main/resources/stop.png");
+                    Image image4 = stopIcon.getImage();
+                    image4 = image4.getScaledInstance(95, 95, Image.SCALE_SMOOTH);
+                    stopIcon = new ImageIcon(image4);
+                    stopButton.setIcon(stopIcon);
+                    stopButton.setPreferredSize(new Dimension(80,80));
+                    stopButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                    stopButton.setVerticalTextPosition(SwingConstants.CENTER);
+                }
+            }
+        });
 
         ImageIcon prevIcon = new ImageIcon("src/main/resources/prev.png");
         Image image3 = prevIcon.getImage();
@@ -85,6 +210,38 @@ public class MusicPlayerView extends JFrame {
         prevButton.setPreferredSize(new Dimension(80,80));
         prevButton.setHorizontalTextPosition(SwingConstants.CENTER);
         prevButton.setVerticalTextPosition(SwingConstants.CENTER);
+
+        prevButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (!isPlaying) {
+                    ImageIcon playOnIcon = new ImageIcon("src/main/resources/playon.png");
+                    Image image = playOnIcon.getImage();
+                    image = image.getScaledInstance(105, 105, Image.SCALE_SMOOTH);
+                    playOnIcon = new ImageIcon(image);
+                    playButton.setIcon(playOnIcon);
+                    playButton.setPreferredSize(new Dimension(90,90));
+                    playButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                    playButton.setVerticalTextPosition(SwingConstants.CENTER);
+                    ImageIcon pauseIcon = new ImageIcon("src/main/resources/pause.png");
+                    Image image1 = pauseIcon.getImage();
+                    image1 = image1.getScaledInstance(95, 95, Image.SCALE_SMOOTH);
+                    pauseIcon = new ImageIcon(image1);
+                    pauseButton.setIcon(pauseIcon);
+                    pauseButton.setPreferredSize(new Dimension(80,80));
+                    pauseButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                    pauseButton.setVerticalTextPosition(SwingConstants.CENTER);
+                    ImageIcon stopIcon = new ImageIcon("src/main/resources/stop.png");
+                    Image image4 = stopIcon.getImage();
+                    image4 = image4.getScaledInstance(95, 95, Image.SCALE_SMOOTH);
+                    stopIcon = new ImageIcon(image4);
+                    stopButton.setIcon(stopIcon);
+                    stopButton.setPreferredSize(new Dimension(80,80));
+                    stopButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                    stopButton.setVerticalTextPosition(SwingConstants.CENTER);
+                }
+            }
+        });
 
         ImageIcon stopIcon = new ImageIcon("src/main/resources/stop.png");
         Image image4 = stopIcon.getImage();
@@ -100,18 +257,68 @@ public class MusicPlayerView extends JFrame {
         image5 = image5.getScaledInstance(55, 55, Image.SCALE_SMOOTH);
         shuffleIcon = new ImageIcon(image5);
         shuffleButton.setIcon(shuffleIcon);
-        shuffleButton.setPreferredSize(new Dimension(50,50));
+        shuffleButton.setPreferredSize(new Dimension(50, 50));
         shuffleButton.setHorizontalTextPosition(SwingConstants.CENTER);
         shuffleButton.setVerticalTextPosition(SwingConstants.CENTER);
 
+        shuffleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (!isShuffled) {
+                    ImageIcon shuffleIcon = new ImageIcon("src/main/resources/shuffle.png");
+                    Image image5 = shuffleIcon.getImage();
+                    image5 = image5.getScaledInstance(55, 55, Image.SCALE_SMOOTH);
+                    shuffleIcon = new ImageIcon(image5);
+                    shuffleButton.setIcon(shuffleIcon);
+                    shuffleButton.setPreferredSize(new Dimension(50, 50));
+                    shuffleButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                    shuffleButton.setVerticalTextPosition(SwingConstants.CENTER);
+                } else {
+                    ImageIcon shuffleOnIcon = new ImageIcon("src/main/resources/shuffleon.png");
+                    Image image6 = shuffleOnIcon.getImage();
+                    image6 = image6.getScaledInstance(55, 55, Image.SCALE_SMOOTH);
+                    shuffleOnIcon = new ImageIcon(image6);
+                    shuffleButton.setIcon(shuffleOnIcon);
+                    shuffleButton.setPreferredSize(new Dimension(50, 50));
+                    shuffleButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                    shuffleButton.setVerticalTextPosition(SwingConstants.CENTER);
+                }
+            }
+        });
+
         ImageIcon repeatIcon = new ImageIcon("src/main/resources/repeat.png");
-        Image image6 = repeatIcon.getImage();
-        image6 = image6.getScaledInstance(55, 55, Image.SCALE_SMOOTH);
-        repeatIcon = new ImageIcon(image6);
+        Image image7 = repeatIcon.getImage();
+        image7 = image7.getScaledInstance(55, 55, Image.SCALE_SMOOTH);
+        repeatIcon = new ImageIcon(image7);
         repeatButton.setIcon(repeatIcon);
         repeatButton.setPreferredSize(new Dimension(50,50));
         repeatButton.setHorizontalTextPosition(SwingConstants.CENTER);
         repeatButton.setVerticalTextPosition(SwingConstants.CENTER);
+
+        repeatButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (!isRepeat) {
+                    ImageIcon repeatIcon = new ImageIcon("src/main/resources/repeat.png");
+                    Image image7 = repeatIcon.getImage();
+                    image7 = image7.getScaledInstance(55, 55, Image.SCALE_SMOOTH);
+                    repeatIcon = new ImageIcon(image7);
+                    repeatButton.setIcon(repeatIcon);
+                    repeatButton.setPreferredSize(new Dimension(50,50));
+                    repeatButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                    repeatButton.setVerticalTextPosition(SwingConstants.CENTER);
+                } else {
+                    ImageIcon repeatOnIcon = new ImageIcon("src/main/resources/repeaton.png");
+                    Image image8 = repeatOnIcon.getImage();
+                    image8 = image8.getScaledInstance(55, 55, Image.SCALE_SMOOTH);
+                    repeatOnIcon = new ImageIcon(image8);
+                    repeatButton.setIcon(repeatOnIcon);
+                    repeatButton.setPreferredSize(new Dimension(50,50));
+                    repeatButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                    repeatButton.setVerticalTextPosition(SwingConstants.CENTER);
+                }
+            }
+        });
 
         Image backgroundImage = ImageIO.read(new File("src/main/resources/background.jpg"));
 
@@ -124,7 +331,6 @@ public class MusicPlayerView extends JFrame {
 
         contentPanel.setOpaque(false);
         contentPanel.add(new JLabel(new ImageIcon(backgroundImage)), BorderLayout.NORTH);
-
 
         JScrollPane songListPane = new JScrollPane(songList);
 
@@ -143,22 +349,23 @@ public class MusicPlayerView extends JFrame {
         buttonPanel.add(repeatButton);
         listPanel.add(songListPane);
 
-//        songList.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                MusicPlayerModel model = new MusicPlayerModel();
-//                if (e.getClickCount() == 2) {
-//                    int index = songList.locationToIndex(e.getPoint());
-//                    try {
-//                        model.clickedPlay(controller.songs, index);
-//                    } catch (InterruptedException | PlayerException | IOException | InvalidDataException |
-//                             UnsupportedTagException ex) {
-//                        //org.hua.LogHandler.writeToLogNoThread(Level.SEVERE,"RuntimeException");
-//                        throw new RuntimeException(ex);
-//                    }
-//                }
-//            }
-//        });
+        songList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                MusicPlayerModel model = new MusicPlayerModel();
+                if (e.getClickCount() == 2) {
+                    int index = songList.locationToIndex(e.getPoint());
+                    try {
+                        model.clickedPlay(MusicPlayerController.songs, index);
+                    } catch (InterruptedException | PlayerException | IOException | InvalidDataException |
+                             UnsupportedTagException ex) {
+                        //org.hua.LogHandler.writeToLogNoThread(Level.SEVERE,"RuntimeException");
+                        throw new RuntimeException(ex);
+                    }
+                }
+            }
+        });
+
         // Ask user to input folder path
         String folder = JOptionPane.showInputDialog(this, "Please enter the folder name with its path: ");
         controller.setSongsInFolder(folder,this);
@@ -171,29 +378,48 @@ public class MusicPlayerView extends JFrame {
         // Set the controller as the action listener for the buttons
         controller.setView(this);
     }
+
+    public void setPlaying(boolean isPlaying) {
+        this.isPlaying = isPlaying;
+    }
+
+    public void setShuffleOn (boolean isShuffled) {
+        this.isShuffled = isShuffled;
+    }
+
+    public void setRepeatOn (boolean isRepeat) {
+        this.isRepeat = isRepeat;
+    }
+
     public JButton getPlayButton() {
         return playButton;
     }
+
     public JButton getPauseButton() {
         return pauseButton;
     }
+
     public JButton getNextButton() {
         return nextButton;
     }
+
     public JButton getPrevButton() {
         return prevButton;
     }
+
     public JButton getStopButton() {
         return stopButton;
     }
+
     public JButton getShuffleButton() {
         return shuffleButton;
     }
+
     public JButton getRepeatButton() {
         return repeatButton;
     }
+
     public JList<String> getSongList() {
         return songList;
     }
-
 }

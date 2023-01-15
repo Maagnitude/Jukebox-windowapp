@@ -2,9 +2,9 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2023-01-11T14:24:56.054130800Z</date>
-  <millis>1673447096054</millis>
-  <nanos>130800</nanos>
+  <date>2023-01-15T16:46:42.763225098Z</date>
+  <millis>1673801202763</millis>
+  <nanos>225098</nanos>
   <sequence>0</sequence>
   <logger>org.hua.LogHandler</logger>
   <level>INFO</level>
@@ -12,5 +12,117 @@
   <method>writeToLogNow</method>
   <thread>1</thread>
   <message>Starting the program</message>
+</record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2023-01-15T16:46:54.937196518Z</date>
+  <millis>1673801214937</millis>
+  <nanos>196518</nanos>
+  <sequence>1</sequence>
+  <logger>org.hua.LogHandler</logger>
+  <level>INFO</level>
+  <class>org.hua.LogHandler$LogSave</class>
+  <method>writeToLogNow</method>
+  <thread>21</thread>
+  <message> is stopped</message>
+</record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2023-01-15T16:46:57.813164005Z</date>
+  <millis>1673801217813</millis>
+  <nanos>164005</nanos>
+  <sequence>2</sequence>
+  <logger>org.hua.LogHandler</logger>
+  <level>INFO</level>
+  <class>org.hua.LogHandler$LogSave</class>
+  <method>writeToLogNow</method>
+  <thread>21</thread>
+  <message> is stopped</message>
+</record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2023-01-15T16:46:58.006803841Z</date>
+  <millis>1673801218006</millis>
+  <nanos>803841</nanos>
+  <sequence>3</sequence>
+  <logger>org.hua.LogHandler</logger>
+  <level>INFO</level>
+  <class>org.hua.LogHandler$LogSave</class>
+  <method>writeToLogNow</method>
+  <thread>21</thread>
+  <message> is stopped</message>
+</record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2023-01-15T16:46:58.196821987Z</date>
+  <millis>1673801218196</millis>
+  <nanos>821987</nanos>
+  <sequence>4</sequence>
+  <logger>org.hua.LogHandler</logger>
+  <level>INFO</level>
+  <class>org.hua.LogHandler$LogSave</class>
+  <method>writeToLogNow</method>
+  <thread>21</thread>
+  <message> is stopped</message>
+</record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2023-01-15T16:46:58.368900699Z</date>
+  <millis>1673801218368</millis>
+  <nanos>900699</nanos>
+  <sequence>5</sequence>
+  <logger>org.hua.LogHandler</logger>
+  <level>INFO</level>
+  <class>org.hua.LogHandler$LogSave</class>
+  <method>writeToLogNow</method>
+  <thread>21</thread>
+  <message> is stopped</message>
+</record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2023-01-15T16:46:58.534688757Z</date>
+  <millis>1673801218534</millis>
+  <nanos>688757</nanos>
+  <sequence>6</sequence>
+  <logger>org.hua.LogHandler</logger>
+  <level>INFO</level>
+  <class>org.hua.LogHandler$LogSave</class>
+  <method>writeToLogNow</method>
+  <thread>21</thread>
+  <message> is stopped</message>
+</record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2023-01-15T16:46:59.593628972Z</date>
+  <millis>1673801219593</millis>
+  <nanos>628972</nanos>
+  <sequence>7</sequence>
+  <logger>org.hua.LogHandler</logger>
+  <level>INFO</level>
+  <class>org.hua.LogHandler$LogSave</class>
+  <method>writeToLogNow</method>
+  <thread>21</thread>
+  <message> is stopped</message>
 </record>
 </log>

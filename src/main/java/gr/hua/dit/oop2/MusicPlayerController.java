@@ -3,6 +3,7 @@ package gr.hua.dit.oop2;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import gr.hua.dit.oop2.musicplayer.PlayerException;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,25 +13,22 @@ import java.util.logging.Level;
 
 public class MusicPlayerController implements ActionListener {
     static ArrayList<String> songs = new ArrayList<String>();
-
     private final MusicPlayerModel model;
     private MusicPlayerView view;
 
-    private int change_mod_loop = 0;
-
-    private int change_mod_shuffle = 0;
-    private final JFileChooser fileChooser;
     public MusicPlayerController(MusicPlayerModel model) {
         this.model = model;
-        fileChooser = new JFileChooser();
+        JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.addChoosableFileFilter(new MP3FileFilter());
     }
+
     public void setSongsInFolder(String folder, MusicPlayerView view) {
         File dir = new File(folder);
         File[] files = dir.listFiles();
         DefaultListModel<String> model = new DefaultListModel<>();
+        assert files != null;
         for (File file : files) {
             if (file.toString().endsWith(".mp3")) {
                 songs.add(file.toString());
@@ -39,6 +37,7 @@ public class MusicPlayerController implements ActionListener {
         }
         view.getSongList().setModel(model);
     }
+
     public void setView(MusicPlayerView view) {
         this.view = view;
         view.getPlayButton().addActionListener(this);
@@ -49,34 +48,34 @@ public class MusicPlayerController implements ActionListener {
         view.getShuffleButton().addActionListener(this);
         view.getRepeatButton().addActionListener(this);
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == view.getPlayButton()) {
             try {
+                model.setStopPressed(false);
+                view.setPlaying(true);
                 model.playSong(songs);
             } catch (FileNotFoundException ex) {
                 //org.hua.LogHandler.writeToLogNoThread(Level.SEVERE,"RuntimeException");
                 throw new RuntimeException(ex);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            } catch (PlayerException ex) {
-                throw new RuntimeException(ex);
-            } catch (InterruptedException ex) {
-                throw new RuntimeException(ex);
-            } catch (InvalidDataException ex) {
-                throw new RuntimeException(ex);
-            } catch (UnsupportedTagException ex) {
+            } catch (IOException | PlayerException | InterruptedException | InvalidDataException |
+                     UnsupportedTagException ex) {
                 throw new RuntimeException(ex);
             }
         } else if (e.getSource() == view.getPauseButton()) {
+            view.setPlaying(false);
             model.pause();
             //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Model paused");
         } else if (e.getSource() == view.getStopButton()) {
+            view.setPlaying(false);
+            model.setStopPressed(true);
             model.stop();
             //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Model stopped");
         } else if (e.getSource() == view.getNextButton()) {
             try {
+                model.setStopPressed(false);
                 model.next(songs);
             } catch (PlayerException | InterruptedException | FileNotFoundException ex) {
                 org.hua.LogHandler.writeToLogNoThread(Level.SEVERE,"RuntimeException");
@@ -86,43 +85,35 @@ public class MusicPlayerController implements ActionListener {
             }
         } else if (e.getSource() == view.getPrevButton()) {
             try {
+                model.setStopPressed(true);
                 model.prev(songs);
             } catch (InterruptedException | PlayerException | IOException | InvalidDataException |
                      UnsupportedTagException ex) {
-                //org.hua.LogHandler.writeToLogNoThread(Level.SEVERE,"RuntimeException");
+                org.hua.LogHandler.writeToLogNoThread(Level.SEVERE,"RuntimeException");
                 throw new RuntimeException(ex);
             }
         } else if (e.getSource() == view.getShuffleButton()) {
-            // TODO
-            try {
-                if(change_mod_shuffle%2==0){
-                    model.random(songs);
-                    change_mod_shuffle = (change_mod_shuffle + 1) % 2;
-                }
-                else{
-                    model.playSong(songs);
-                    change_mod_shuffle = (change_mod_shuffle + 1) % 2;
-                }
-                //model.random(songs);
-            } catch (PlayerException | InvalidDataException | UnsupportedTagException | IOException |
-                     InterruptedException ex) {
-                throw new RuntimeException(ex);
+            if(model.isShuffled()){
+                view.setShuffleOn(false);
+                model.setShuffled(false);
+                org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Songs are in order");
+
+            } else {
+                view.setShuffleOn(true);
+                model.setShuffled(true);
+                org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Songs are shuffled");
             }
         } else if (e.getSource() == view.getRepeatButton()) {
-            // TODO
-            try {
-                if(change_mod_loop%2==0){
-                    model.loop(songs);
-                    change_mod_loop = (change_mod_loop + 1) % 2;
-                }
-                else{
-                    model.playSong(songs);
-                    change_mod_loop = change_mod_loop + 1;
-                }
-                //model.loop(songs);
-            } catch (PlayerException | InvalidDataException | UnsupportedTagException | IOException |
-                     InterruptedException ex) {
-                throw new RuntimeException(ex);
+            if(model.isRepeat()){
+                view.setRepeatOn(false);
+                model.setRepeat(false);
+                org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Songs are in order");
+            }
+            else{
+                view.setRepeatOn(true);
+                model.setRepeat(true);
+                org.hua.LogHandler.writeToLogNoThread(Level.INFO,"The song is looped");
+
             }
         }
     }
