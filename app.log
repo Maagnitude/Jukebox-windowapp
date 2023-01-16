@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2023-01-16T21:25:38.702975865Z</date>
+  <millis>1673904338702</millis>
+  <nanos>975865</nanos>
+  <sequence>0</sequence>
+  <logger>org.hua.LogHandler</logger>
+  <level>INFO</level>
+  <class>org.hua.LogHandler$LogSave</class>
+  <method>writeToLogNow</method>
+  <thread>1</thread>
+  <message>Starting the program</message>
+</record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2023-01-16T21:25:47.729965152Z</date>
+  <millis>1673904347729</millis>
+  <nanos>965152</nanos>
+  <sequence>1</sequence>
+  <logger>org.hua.LogHandler</logger>
+  <level>INFO</level>
+  <class>org.hua.LogHandler$LogSave</class>
+  <method>writeToLogNow</method>
+  <thread>23</thread>
+  <message>Next song</message>
+</record>
+</log>
