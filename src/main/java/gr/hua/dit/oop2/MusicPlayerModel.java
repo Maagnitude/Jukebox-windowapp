@@ -18,6 +18,7 @@ public class MusicPlayerModel {
     private boolean isRepeat = false;
     private boolean firstTimeShuffled = true;
     private boolean stopPressed = false;
+    private boolean isNextPrevClick = false;
     String song = "";
     private final ArrayList<String> shuffledArray = new ArrayList<>();
 
@@ -45,9 +46,10 @@ public class MusicPlayerModel {
                 System.out.println(song.substring(song.lastIndexOf("/") + 1) + " is " + player.getStatus());
                 player.addPlayerListener(new PlayerListener() {
                     public void statusUpdated(PlayerEvent e) {
-                        if (e.getStatus() == Player.Status.IDLE && !(stopPressed)) {
+                        if (e.getStatus() == Player.Status.IDLE && !(stopPressed) && !(isNextPrevClick)) {
                             try {
                                 System.out.println(currentSongIndex);
+                                System.out.println("stopPressed is: " + stopPressed + " and isNextPrevClick: " + isNextPrevClick);
                                 next(songs);
                             } catch (PlayerException | InvalidDataException | UnsupportedTagException | IOException |
                                      InterruptedException ex) {
@@ -69,25 +71,31 @@ public class MusicPlayerModel {
 
     public void next(ArrayList<String> songs) throws PlayerException, IOException, InterruptedException, InvalidDataException, UnsupportedTagException {
         player.stop();
+        Thread.sleep(1000);
         if (isRepeat) {
             playSong(songs);
         } else {
-//            org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Next song");
+            org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Next song");
             currentSongIndex = (currentSongIndex + 1) % songs.size();
             playSong(songs);
         }
+        isNextPrevClick = false;
     }
 
     public void prev(ArrayList<String> songs) throws InterruptedException, PlayerException, IOException, InvalidDataException, UnsupportedTagException {
         player.stop();
-        org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Previous song");
-        currentSongIndex = (currentSongIndex - 2);
-        if (currentSongIndex == -2) {
-            currentSongIndex = songs.size() - 1;
-        } else if (currentSongIndex == -1) {
-            currentSongIndex = 0;
+        Thread.sleep(1000);
+        if (isRepeat) {
+            playSong(songs);
+        } else {
+            org.hua.LogHandler.writeToLogNoThread(Level.INFO, "Previous song");
+            currentSongIndex = (currentSongIndex - 1);
+            if (currentSongIndex == -1) {
+                currentSongIndex = songs.size() - 1;
+            }
+            playSong(songs);
         }
-        playSong(songs);
+        isNextPrevClick = false;
     }
 
     public void stop() {
@@ -134,7 +142,9 @@ public class MusicPlayerModel {
             firstTimeShuffled = false;
         }
     }
-
+    public void setNextPrevClick (boolean isNextPrevClick) {
+        this.isNextPrevClick = isNextPrevClick;
+    }
     public void setShuffled (boolean isShuffled) {
         this.isShuffled = isShuffled;
     }

@@ -10,7 +10,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -353,6 +355,7 @@ public class MusicPlayerView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 MusicPlayerModel model = new MusicPlayerModel();
+                model.setNextPrevClick(true);
                 if (e.getClickCount() == 2) {
                     int index = songList.locationToIndex(e.getPoint());
                     try {
@@ -366,9 +369,15 @@ public class MusicPlayerView extends JFrame {
             }
         });
 
+        final JFileChooser fc = new JFileChooser(".");
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
         // Ask user to input folder path
-        String folder = JOptionPane.showInputDialog(this, "Please enter the folder name with its path: ");
-        controller.setSongsInFolder(folder,this);
+        int folder = fc.showOpenDialog(null);
+        if(folder == JFileChooser.APPROVE_OPTION) {
+            File directory = fc.getSelectedFile();
+            controller.setSongsInFolder(String.valueOf(directory), this);
+        }
 
         // Add the panel to the frame
         setLayout(new BorderLayout());

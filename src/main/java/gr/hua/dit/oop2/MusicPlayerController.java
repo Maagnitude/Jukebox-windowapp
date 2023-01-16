@@ -18,10 +18,6 @@ public class MusicPlayerController implements ActionListener {
 
     public MusicPlayerController(MusicPlayerModel model) {
         this.model = model;
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setAcceptAllFileFilterUsed(false);
-        fileChooser.addChoosableFileFilter(new MP3FileFilter());
     }
 
     public void setSongsInFolder(String folder, MusicPlayerView view) {
@@ -76,6 +72,7 @@ public class MusicPlayerController implements ActionListener {
         } else if (e.getSource() == view.getNextButton()) {
             try {
                 model.setStopPressed(false);
+                model.setNextPrevClick(true);
                 model.next(songs);
             } catch (PlayerException | InterruptedException | FileNotFoundException ex) {
                 org.hua.LogHandler.writeToLogNoThread(Level.SEVERE,"RuntimeException");
@@ -85,7 +82,8 @@ public class MusicPlayerController implements ActionListener {
             }
         } else if (e.getSource() == view.getPrevButton()) {
             try {
-                model.setStopPressed(true);
+                model.setStopPressed(false);
+                model.setNextPrevClick(true);
                 model.prev(songs);
             } catch (InterruptedException | PlayerException | IOException | InvalidDataException |
                      UnsupportedTagException ex) {
