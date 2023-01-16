@@ -14,6 +14,7 @@ import java.util.logging.Level;
 public class MusicPlayerModel {
     private final Player player;
     private int currentSongIndex = 0;
+
     private boolean isShuffled = false;
     private boolean isRepeat = false;
     private boolean firstTimeShuffled = true;
@@ -36,6 +37,7 @@ public class MusicPlayerModel {
         }
         mp3MetaData(song);
         InputStream file = new FileInputStream(song);
+
         if (player.getStatus() != Player.Status.PLAYING) {
             // If the player was paused, resume playback
             if (player.getStatus() == Player.Status.PAUSED) {
