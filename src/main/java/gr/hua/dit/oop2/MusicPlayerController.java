@@ -20,15 +20,64 @@ public class MusicPlayerController implements ActionListener {
         this.model = model;
     }
 
-    public void setSongsInFolder(String folder, MusicPlayerView view) {
+    public void setSongsInFolder(String folder, MusicPlayerView view) throws IOException {
         File dir = new File(folder);
-        File[] files = dir.listFiles();
+        String path = dir.getParent();
         DefaultListModel<String> model = new DefaultListModel<>();
-        assert files != null;
-        for (File file : files) {
-            if (file.toString().endsWith(".mp3")) {
-                songs.add(file.toString());
-                model.addElement(file.getName());
+        if (dir.toString().endsWith(".m3u")) {
+            Reader in = new FileReader(dir);
+            BufferedReader in2 = new BufferedReader(in);
+            String s = in2.readLine();
+            while (s != null) {
+                if (s.contains("#")) {
+                    s = in2.readLine();
+                } else if (s.contains("file:")) {
+                    System.out.println(s.substring(7));
+                    songs.add(s.substring(7));
+                    model.addElement(s.substring(s.lastIndexOf("/") + 1));
+                    s = in2.readLine();
+                } else if (s.contains("\\")) {
+                    System.out.println(s);
+                    songs.add(s);
+                    model.addElement(s);
+                    s = in2.readLine();
+                } else {
+                    songs.add(path + "/" + s);
+                    model.addElement(s);
+                    s = in2.readLine();
+                }
+            }
+        } else {
+            File[] files = dir.listFiles();
+            assert files != null;
+            for (File file : files) {
+                if (file.toString().endsWith(".mp3")) {
+                    songs.add(file.toString());
+                    model.addElement(file.getName());
+                } else if (file.toString().endsWith(".m3u")) {
+                    Reader in = new FileReader(file);
+                    BufferedReader in2 = new BufferedReader(in);
+                    String s = in2.readLine();
+                    while (s != null) {
+                        if (s.contains("#")) {
+                            s = in2.readLine();
+                        } else if (s.contains("file:")) {
+                            System.out.println(s.substring(7));
+                            songs.add(s.substring(7));
+                            model.addElement(s.substring(s.lastIndexOf("/") + 1));
+                            s = in2.readLine();
+                        } else if (s.contains("\\")) {
+                            System.out.println(s);
+                            songs.add(s);
+                            model.addElement(s);
+                            s = in2.readLine();
+                        } else {
+                            songs.add(folder + "/" + s);
+                            model.addElement(s);
+                            s = in2.readLine();
+                        }
+                    }
+                }
             }
         }
         view.getSongList().setModel(model);
