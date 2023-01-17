@@ -6,7 +6,7 @@ import java.util.logging.Level;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Starting the program");
+        org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Opening Mp3Player app...");
         MusicPlayerModel model = new MusicPlayerModel();
         MusicPlayerController controller = new MusicPlayerController(model);
         MusicPlayerView view = new MusicPlayerView(controller);
