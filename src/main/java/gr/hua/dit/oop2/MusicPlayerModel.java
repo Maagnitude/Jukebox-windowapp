@@ -1,15 +1,14 @@
 package gr.hua.dit.oop2;
 
-import com.mpatric.mp3agic.ID3v1;
-import com.mpatric.mp3agic.InvalidDataException;
-import com.mpatric.mp3agic.Mp3File;
-import com.mpatric.mp3agic.UnsupportedTagException;
+import com.mpatric.mp3agic.*;
 import gr.hua.dit.oop2.musicplayer.*;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
+
+import static gr.hua.dit.oop2.MusicPlayerController.songs;
 
 public class MusicPlayerModel {
     private final Player player;
@@ -21,6 +20,9 @@ public class MusicPlayerModel {
     private boolean isNextPrevClick = false;
     String song = "";
     private final ArrayList<String> shuffledArray = new ArrayList<>();
+    private final ArrayList<String> allsongs = new ArrayList<>();
+
+    
 
     public MusicPlayerModel() {
         player = PlayerFactory.getPlayer();
@@ -158,17 +160,14 @@ public class MusicPlayerModel {
     public boolean isRepeat () {
         return isRepeat;
     }
-    public void mp3MetaData(String song) throws InvalidDataException, UnsupportedTagException, IOException {
+    public String mp3MetaData(String song) throws InvalidDataException, UnsupportedTagException, IOException {
+        //Mp3File mp3file = new Mp3File(song);
+        String results = "Track: -Artist: -Title -";
         Mp3File mp3file = new Mp3File(song);
-        if (mp3file.hasId3v1Tag()) {
-            ID3v1 id3v1Tag = mp3file.getId3v1Tag();
-            System.out.println("Track: " + id3v1Tag.getTrack());
-            System.out.println("Artist: " + id3v1Tag.getArtist());
-            System.out.println("Title: " + id3v1Tag.getTitle());
-            System.out.println("Album: " + id3v1Tag.getAlbum());
-            System.out.println("Year: " + id3v1Tag.getYear());
-            System.out.println("Genre: " + id3v1Tag.getGenre() + " (" + id3v1Tag.getGenreDescription() + ")");
-            System.out.println("Comment: " + id3v1Tag.getComment());
+        if (mp3file.hasId3v2Tag()) {
+            ID3v2 id3v2Tag = mp3file.getId3v2Tag();
+            results = "Track: " +id3v2Tag.getTrack()+ " Artist: " +id3v2Tag.getArtist()+ " Title: " +id3v2Tag.getTitle()+" ";
         }
+        return results;
     }
 }

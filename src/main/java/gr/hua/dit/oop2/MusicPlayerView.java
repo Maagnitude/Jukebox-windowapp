@@ -11,9 +11,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+
+import static gr.hua.dit.oop2.MusicPlayerController.songs;
 
 public class MusicPlayerView extends JFrame {
 
@@ -30,11 +34,18 @@ public class MusicPlayerView extends JFrame {
     private boolean isRepeat = false;
     private boolean isPlaying = false;
 
-    public MusicPlayerView(MusicPlayerController controller) throws IOException {
+
+
+    private  int i =0;
+
+    public MusicPlayerView(MusicPlayerController controller) throws IOException, InvalidDataException, UnsupportedTagException {
 
         setTitle("Music Player");
         setSize(1000, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
+
 
         // Create the media buttons
         playButton = new JButton("");
@@ -348,13 +359,16 @@ public class MusicPlayerView extends JFrame {
         contentPanel.add(new JLabel(new ImageIcon(backgroundImage)), BorderLayout.NORTH);
 
         JScrollPane songListPane = new JScrollPane(songList);
+        //JLabel text = new JLabel();
 
         songListPane.setPreferredSize(new Dimension(200,500));
 
         // Add the buttons to a panel
         JPanel buttonPanel = new JPanel();
         JPanel listPanel = new JPanel();
-//        JPanel barPanel = new JPanel();
+        JTextField myOutput = new JTextField(900);
+        //JPanel textPanel = new JPanel();
+        //JPanel barPanel = new JPanel();
         buttonPanel.setOpaque(false);
         buttonPanel.add(shuffleButton);
         buttonPanel.add(prevButton);
@@ -364,7 +378,7 @@ public class MusicPlayerView extends JFrame {
         buttonPanel.add(nextButton);
         buttonPanel.add(repeatButton);
         listPanel.add(songListPane);
-//        barPanel.add(jProgressBar);
+        //textPanel.add(text);
 
         songList.addMouseListener(new MouseAdapter() {
             @Override
@@ -374,6 +388,7 @@ public class MusicPlayerView extends JFrame {
                 model.setNextPrevClick(true);
 
                 if (e.getClickCount() == 2) {
+                    i = (i%songs.size());
                     ImageIcon playOnIcon = new ImageIcon("src/main/resources/playon.png");
                     Image image = playOnIcon.getImage();
                     image = image.getScaledInstance(105, 105, Image.SCALE_SMOOTH);
@@ -402,7 +417,19 @@ public class MusicPlayerView extends JFrame {
                     model.setCurrentSongIndex(songList.locationToIndex(e.getPoint()));
 
                     try {
-                        model.clickedPlay(MusicPlayerController.songs);
+                        //text.setText(model.mp3MetaData(songs.get(songList.locationToIndex(e.getPoint()))));
+                        myOutput.setText(model.mp3MetaData(songs.get(songList.locationToIndex(e.getPoint()))));
+                    } catch (InvalidDataException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (UnsupportedTagException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+
+
+                    try {
+                        model.clickedPlay(songs);
                     } catch (InterruptedException | PlayerException | IOException | InvalidDataException |
                              UnsupportedTagException ex) {
                         //org.hua.LogHandler.writeToLogNoThread(Level.SEVERE,"RuntimeException");
@@ -426,10 +453,14 @@ public class MusicPlayerView extends JFrame {
         setLayout(new BorderLayout());
         add(buttonPanel, BorderLayout.SOUTH);
         add(listPanel, BorderLayout.WEST);
-//        add(barPanel, BorderLayout.CENTER);
+        //add(text,BorderLayout.CENTER);
+        add(myOutput,BorderLayout.NORTH);
+        //add(textPanel,BorderLayout.CENTER);
+        //add(contentPanel, BorderLayout.CENTER);
 
         // Set the controller as the action listener for the buttons
         controller.setView(this);
+
     }
 
     public void setPlaying(boolean isPlaying) {

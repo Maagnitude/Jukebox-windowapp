@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 public class MusicPlayerController implements ActionListener {
-    static ArrayList<String> songs = new ArrayList<String>();
+     static ArrayList<String> songs = new ArrayList<String>();
     private final MusicPlayerModel model;
     private MusicPlayerView view;
 
@@ -81,8 +81,8 @@ public class MusicPlayerController implements ActionListener {
             }
         }
         view.getSongList().setModel(model);
-    }
 
+    }
     public void setView(MusicPlayerView view) {
         this.view = view;
         view.getPlayButton().addActionListener(this);

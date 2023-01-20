@@ -2,9 +2,9 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2023-01-17T21:36:53.207794807Z</date>
-  <millis>1673991413207</millis>
-  <nanos>794807</nanos>
+  <date>2023-01-20T17:27:06.784619476Z</date>
+  <millis>1674235626784</millis>
+  <nanos>619476</nanos>
   <sequence>0</sequence>
   <logger>org.hua.LogHandler</logger>
   <level>INFO</level>
@@ -12,85 +12,5 @@
   <method>writeToLogNow</method>
   <thread>1</thread>
   <message>Opening Mp3Player app...</message>
-</record>
-</log>
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE log SYSTEM "logger.dtd">
-<log>
-<record>
-  <date>2023-01-17T21:37:05.960963922Z</date>
-  <millis>1673991425960</millis>
-  <nanos>963922</nanos>
-  <sequence>1</sequence>
-  <logger>org.hua.LogHandler</logger>
-  <level>INFO</level>
-  <class>org.hua.LogHandler$LogSave</class>
-  <method>writeToLogNow</method>
-  <thread>23</thread>
-  <message>Next song</message>
-</record>
-</log>
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE log SYSTEM "logger.dtd">
-<log>
-<record>
-  <date>2023-01-17T21:37:08.409104626Z</date>
-  <millis>1673991428409</millis>
-  <nanos>104626</nanos>
-  <sequence>2</sequence>
-  <logger>org.hua.LogHandler</logger>
-  <level>INFO</level>
-  <class>org.hua.LogHandler$LogSave</class>
-  <method>writeToLogNow</method>
-  <thread>23</thread>
-  <message>Next song</message>
-</record>
-</log>
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE log SYSTEM "logger.dtd">
-<log>
-<record>
-  <date>2023-01-17T21:37:10.343156820Z</date>
-  <millis>1673991430343</millis>
-  <nanos>156820</nanos>
-  <sequence>3</sequence>
-  <logger>org.hua.LogHandler</logger>
-  <level>INFO</level>
-  <class>org.hua.LogHandler$LogSave</class>
-  <method>writeToLogNow</method>
-  <thread>23</thread>
-  <message>Next song</message>
-</record>
-</log>
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE log SYSTEM "logger.dtd">
-<log>
-<record>
-  <date>2023-01-17T21:37:11.982868787Z</date>
-  <millis>1673991431982</millis>
-  <nanos>868787</nanos>
-  <sequence>4</sequence>
-  <logger>org.hua.LogHandler</logger>
-  <level>INFO</level>
-  <class>org.hua.LogHandler$LogSave</class>
-  <method>writeToLogNow</method>
-  <thread>23</thread>
-  <message>Next song</message>
-</record>
-</log>
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE log SYSTEM "logger.dtd">
-<log>
-<record>
-  <date>2023-01-17T21:37:13.888182175Z</date>
-  <millis>1673991433888</millis>
-  <nanos>182175</nanos>
-  <sequence>5</sequence>
-  <logger>org.hua.LogHandler</logger>
-  <level>INFO</level>
-  <class>org.hua.LogHandler$LogSave</class>
-  <method>writeToLogNow</method>
-  <thread>23</thread>
-  <message>Next song</message>
 </record>
 </log>
