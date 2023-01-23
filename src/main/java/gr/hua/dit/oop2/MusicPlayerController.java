@@ -3,7 +3,6 @@ package gr.hua.dit.oop2;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import gr.hua.dit.oop2.musicplayer.PlayerException;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 public class MusicPlayerController implements ActionListener {
-    static ArrayList<String> songs = new ArrayList<String>();
+     static ArrayList<String> songs = new ArrayList<String>();
     private final MusicPlayerModel model;
     private MusicPlayerView view;
 
@@ -20,11 +19,12 @@ public class MusicPlayerController implements ActionListener {
         this.model = model;
     }
 
+    // To make the song list
     public void setSongsInFolder(String folder, MusicPlayerView view) throws IOException {
         File dir = new File(folder);
         String path = dir.getParent();
         DefaultListModel<String> model = new DefaultListModel<>();
-        if (dir.toString().endsWith(".m3u")) {
+        if (dir.toString().endsWith(".m3u")) {                          // If it's an m3u file.
             Reader in = new FileReader(dir);
             BufferedReader in2 = new BufferedReader(in);
             String s = in2.readLine();
@@ -47,14 +47,17 @@ public class MusicPlayerController implements ActionListener {
                     s = in2.readLine();
                 }
             }
-        } else {
+        } else if (dir.toString().endsWith(".mp3")) {               // Checking if the file is an mp3 file
+            songs.add(dir.toString());
+            model.addElement(dir.toString().substring(dir.toString().lastIndexOf("/") + 1));
+        } else {                                                    // If it's a directory.
             File[] files = dir.listFiles();
             assert files != null;
             for (File file : files) {
-                if (file.toString().endsWith(".mp3")) {
+                if (file.toString().endsWith(".mp3")) {             // Checking if the file is an mp3 file
                     songs.add(file.toString());
                     model.addElement(file.getName());
-                } else if (file.toString().endsWith(".m3u")) {
+                } else if (file.toString().endsWith(".m3u")) {      // if the file is an m3u file, to get the songs.
                     Reader in = new FileReader(file);
                     BufferedReader in2 = new BufferedReader(in);
                     String s = in2.readLine();
@@ -80,9 +83,10 @@ public class MusicPlayerController implements ActionListener {
                 }
             }
         }
-        view.getSongList().setModel(model);
+        view.getSongList().setModel(model);             // We get the song list from the view, and set the ready model.
     }
 
+    // Setting the view, and the button action listeners.
     public void setView(MusicPlayerView view) {
         this.view = view;
         view.getPlayButton().addActionListener(this);
@@ -94,6 +98,7 @@ public class MusicPlayerController implements ActionListener {
         view.getRepeatButton().addActionListener(this);
     }
 
+    // Setting an action listener for each button.
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -102,9 +107,6 @@ public class MusicPlayerController implements ActionListener {
                 model.setStopPressed(false);
                 view.setPlaying(true);
                 model.playSong(songs);
-            } catch (FileNotFoundException ex) {
-                //org.hua.LogHandler.writeToLogNoThread(Level.SEVERE,"RuntimeException");
-                throw new RuntimeException(ex);
             } catch (IOException | PlayerException | InterruptedException | InvalidDataException |
                      UnsupportedTagException ex) {
                 throw new RuntimeException(ex);
@@ -112,12 +114,10 @@ public class MusicPlayerController implements ActionListener {
         } else if (e.getSource() == view.getPauseButton()) {
             view.setPlaying(false);
             model.pause();
-            //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Model paused");
         } else if (e.getSource() == view.getStopButton()) {
             view.setPlaying(false);
             model.setStopPressed(true);
             model.stop();
-            //org.hua.LogHandler.writeToLogNoThread(Level.INFO,"Model stopped");
         } else if (e.getSource() == view.getNextButton()) {
             try {
                 model.setStopPressed(false);
@@ -160,9 +160,7 @@ public class MusicPlayerController implements ActionListener {
                 view.setRepeatOn(true);
                 model.setRepeat(true);
                 org.hua.LogHandler.writeToLogNoThread(Level.INFO,"The song is looped");
-
             }
         }
     }
 }
-
