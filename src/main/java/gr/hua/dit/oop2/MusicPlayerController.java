@@ -63,12 +63,10 @@ public class MusicPlayerController implements ActionListener {
                         if (s.contains("#")) {
                             s = in2.readLine();
                         } else if (s.contains("file:")) {
-                            System.out.println(s.substring(7));
                             songs.add(s.substring(7));
                             model.addElement(s.substring(s.lastIndexOf("/") + 1));
                             s = in2.readLine();
                         } else if (s.contains("\\")) {
-                            System.out.println(s);
                             songs.add(s);
                             model.addElement(s);
                             s = in2.readLine();
